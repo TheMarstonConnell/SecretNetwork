@@ -122,6 +122,10 @@ LD_FLAGS := $(ldflags)
 
 all: build_all
 
+install: build-linux
+	mv secretd /usr/bin/secretd
+	mv secretcli /usr/bin/secretcli
+
 vendor:
 	cargo vendor third_party/vendor --manifest-path third_party/build/Cargo.toml
 

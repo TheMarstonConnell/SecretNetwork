@@ -163,7 +163,11 @@ USER $USERNAME
 WORKDIR ${USER_HOME}
 
 RUN cargo install xargo --version 0.3.25
-RUN git clone https://github.com/scrtlabs/SecretNetwork.git
+RUN git clone https://github.com/TheMarstonConnell/SierraNetwork.git
+
+EXPOSE 1317
+EXPOSE 26657
+EXPOSE 26658
 
 WORKDIR ${USER_HOME}/SecretNetwork
 
@@ -173,10 +177,3 @@ RUN rustup target add wasm32-unknown-unknown && rustup component add rust-src ru
 USER root
 # fuck you permissions
 RUN chown $USERNAME:$USERNAME /go -R
-
-# '-l': see https://docs.docker.com/develop/develop-images/dockerfile_best-practices/#user
-RUN useradd -l -u 33333 -G sudo -md /home/gitpod -s /bin/bash -p gitpod gitpod \
-    # passwordless sudo for users in the 'sudo' group
-    && sed -i.bkp -e 's/%sudo\s\+ALL=(ALL\(:ALL\)\?)\s\+ALL/%sudo ALL=NOPASSWD:ALL/g' /etc/sudoers \
-    # To emulate the workspace-session behavior within dazzle build env
-    && mkdir /workspace && chown -hR gitpod:gitpod /workspace
